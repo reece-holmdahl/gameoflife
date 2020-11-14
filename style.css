@@ -298,8 +298,7 @@ p {
 }
 
 #personalCredits span,
-p,
-a {
+p {
   padding-top: 1vh;
   background-color: transparent;
 }
@@ -327,6 +326,12 @@ a {
   font-family: "Courier Prime", monospace;
   font-size: 0.6vw;
   color: white;
+}
+
+#personalCredits a {
+  position: absolute;
+  width: 5vw;
+  top: 33vh;
   text-decoration: none;
   transition: all 0.15s ease-in-out;
 }

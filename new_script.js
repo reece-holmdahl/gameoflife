@@ -188,6 +188,7 @@ function validateAutoStepSettings() {
     !Number.isInteger(getMsPerAutoStep()) ||
     !Number.isInteger(getAutoStepDelay())
   ) {
+    console.log("here");
     getById("autoStep").reset();
   }
 }
@@ -253,12 +254,12 @@ function getColumns() {
 
 // Getter for milliseconds per auto step
 function getMsPerAutoStep() {
-  return msPerAutoStep.value;
+  return parseInt(msPerAutoStep.value);
 }
 
 // Getter for delay before auto stepping begins
 function getAutoStepDelay() {
-  return autoStepDelay.value;
+  return parseInt(autoStepDelay.value);
 }
 
 // Function to build the HTML table

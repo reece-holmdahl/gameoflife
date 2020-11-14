@@ -1,0 +1,29 @@
+divs representing each tile- % of screen size for each spot, horizontal percent, limited vert height
+floating settings bar in corner for configuration page- locked scrolling with #refs for moving page so easier to make configuration area; edit start config by clicking
+
+FUNCTIONALITY NOTES
+adjustable grid size
+infinite? scrolling grid size
+draw by holding mouse click
+seed for first generation
+
+for selection implementation:
+on mouse down and NOT mouse up on a given cell BEGIN selection, end on mouse up of next cell, then for loop select bounds
+
+STYLING NOTES
+button size : image size -> 5:4 ALWAYS:)
+grid is ALWAYS multiple of 8:)
+think about responsive design
+CONWAY's GAME OF LIFE sideways up the left side of the screen
+credits area on lower right side of screen
+linkedin and github in credits?
+REDO color pallete
+pop up for step button to hint it can be held
+
+
+button area:
+6vw by 25vh
+game area:
+94vw by 100vh
+credits area:
+6vw by 75vh

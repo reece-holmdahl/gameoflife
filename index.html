@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Test header</title>
+</head>
+
+<body>
+  <div id="pageWrapper">
+    <div id="gameOfLife">
+      <div id="gameName">
+        <span>Game</span>
+        <span>of</span>
+        <span>Life</span>
+      </div>
+      <table id="gameTable"></table>
+    </div>
+
+    <div id="buttonWrapper">
+      <input id="stepButton" class="button" type="button" value="STEP" />
+      <input id="clearButton" class="button" type="button" value="CLR" onclick="clearScreen()" />
+    </div>
+
+    <div id="personalCredits">
+      <p>my name is</p>
+      <span class="left">reece</span>
+      <span>holmdahl</span>
+      <a href="https://github.com">github here</a>
+    </div>
+  </div>
+
+  <button id="settingsButton" class="button">
+    <img id="cogImg" src="img/cog.png" />
+  </button>
+
+  <div id="settingsWrapper" class="closed">
+    <div id="optionsContainer">
+      <form id="sizeAdjust" class="hide">
+        <h1>grid size adjustment</h1>
+        <label for="horizontalSize">horizontal grid size</label>
+        <input id="horizontalSize" type="text" />
+        <label for="verticalSize">vertical grid size</label>
+        <input id="verticalSize" type="text" />
+        <input id="rebuildTable" class="button" type="button" value="rebuild table" />
+        <input id="resetButton" class="button" type="button" onclick="resetGame()" value="reset" />
+      </form>
+      <form id="autoStep" class="hide">
+        <h1>auto step settings</h1>
+        <label for="msPerAutoStep">milliseconds per auto step</label>
+        <input id="msPerAutoStep" type="text" />
+        <label for="delayBeforeAutoStep">delay (in ms) before auto stepping begins</label>
+        <input id="delayBeforeAutoStep" type="text" />
+      </form>
+      <form id="seedOptions" class="hide">
+        <h1>seed save & load</h1>
+        <p>Nothing here yet, more to come soon!</p>
+      </form>
+    </div>
+  </div>
+</body>
+<script src="new_script.js"></script>
+
+</html>

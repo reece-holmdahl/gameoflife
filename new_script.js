@@ -165,7 +165,8 @@ function validateGridSettings() {
     getRows() < 1 ||
     getColumns < 1 ||
     !Number.isInteger(getRows()) ||
-    !Number.isInteger(getColumns())
+    !Number.isInteger(getColumns()) ||
+    getRows() * getColumns() > 25 * 25
   ) {
     getById("sizeAdjust").reset();
   }

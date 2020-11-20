@@ -6,8 +6,8 @@ const TABLE_HEIGHT = 95;
 const TABLE = document.getElementById('table');
 
 const TABLE_SIZE = {
-    r: 25,
-    c: 25,
+    r: 24,
+    c: 40,
 };
 
 let lifeMap = [];
@@ -192,11 +192,14 @@ function countNeighbors(r, c, alive) {
 
 // TODO Document & ADD CUSTOM TIMING AND STUFF LATER
 function autoStepHandler() {
+    const btn = document.getElementById('autoStepBtn');
     if (autoStepOn) {
         clearInterval(autoStepInterval);
+        btn.classList.remove('on');
         autoStepOn = false;
     } else {
         autoStepInterval = setInterval(stepGame, 100);
+        btn.classList.add('on')
         autoStepOn = true;
     }
 }
@@ -362,9 +365,14 @@ window.addEventListener('mouseover', e => {
         iterateThroughTable((r, c) => {
             const cell = document.getElementById(toId(r, c));
             if (r >= startRow && r <= endRow && c >= startCol && c <= endCol) {
-                cell.classList.add('selected');
+                if (lifeMap[r][c]) {
+                    cell.classList.add('selectedAlive');
+                } else {
+                    cell.classList.add('selectedDead');
+                }
             } else {
-                cell.classList.remove('selected');
+                cell.classList.remove('selectedAlive');
+                cell.classList.remove('selectedDead');
             }
         })
     }
@@ -387,9 +395,9 @@ window.addEventListener('mouseup', e => {
         iterateThroughTable((r, c) => {
             const cell = document.getElementById(toId(r, c));
             if (r >= startRow && r <= endRow && c >= startCol && c <= endCol) {
-                cell.classList.add('alive');
-                cell.classList.remove('dead');
-                lifeMap[r][c] = true;
+                cell.classList.toggle('alive');
+                cell.classList.toggle('dead');
+                lifeMap[r][c] = !lifeMap[r][c];
             }
         })
     }
@@ -397,7 +405,8 @@ window.addEventListener('mouseup', e => {
     // Remove the 'selected' class from every cell since selection is over
     iterateThroughTable((r, c) => {
         const cell = document.getElementById(toId(r, c));
-        cell.classList.remove('selected');
+        cell.classList.remove('selectedAlive');
+        cell.classList.remove('selectedDead');
     })
 
     // No selection exists, null start point
@@ -416,4 +425,8 @@ document.getElementById('getSeedBtn').onclick = () => {
 document.getElementById('loadSeedBtn').onclick = () => {
     loadSeed(document.getElementById("seedIO").value);
 };
+document.getElementById('settingsBtn').onclick = () => {
+    document.getElementById('cogImg').classList.toggle('rotated');
+    document.getElementById('settingsContainer').classList.toggle('open');
+}
 buildTable();

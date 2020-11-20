@@ -1,16 +1,39 @@
+/* Courier prime font import */
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
+
 :root {
+  --green: #59ff20;
+  --alt-green: #92ff6d;
+  --cell-dead-hover: #252626;
+  --cell-dead: black;
   --grid-color: #404040;
   --alt-grid-color: #595959;
+  --button-border: #404040;
+  --alt-button-border: #7f7f7f;
   --cell-size: 2vh;
 }
 
 * {
   margin: 0px;
   padding: 0px;
-  user-select: none;
+}
+
+@keyframes fadeBodyIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+html {
+  overflow: hidden;
 }
 
 body {
+  font-size: 62.5%;
+  animation: fadeBodyIn 1s ease-in;
   background-color: black;
 }
 
@@ -22,7 +45,7 @@ body {
   order: 0;
   width: 5vw;
   height: 100vh;
-  background-color: lime;
+  background-color: white;
 }
 
 #game {
@@ -32,23 +55,150 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-#buttons {
-  order: 2;
-  width: 10vw;
-  height: 100vh;
-  background-color: blue;
-  display: flex;
-  flex-direction: column;
+  user-select: none;
 }
 
 #footer {
   order: 1;
   width: 100%;
   height: 5vh;
-  background-color: red;
+  background-color: white;
 }
+
+/* START Button styling */
+
+#buttons {
+  order: 2;
+  width: 10vw;
+  height: 150vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button {
+  box-sizing: border-box;
+  width: 8vw;
+  height: 2.5vw;
+  padding: 0.25vw;
+  border: 0.2vw solid var(--button-border);
+  border-radius: 0.5vw;
+  background-color: var(--green);
+  color: black;
+  font-family: "Courier Prime", monospace;
+  font-size: 1.2vw;
+  text-align: center;
+  transition: background-color 0.15s ease-in, border-color 0.15s ease-in,
+    border-width, 0.05s linear;
+}
+
+.button:hover {
+  background-color: var(--alt-green);
+  border-color: var(--alt-button-border);
+}
+
+.button:active {
+  width: 8.1vw;
+  border-width: 0.3vw;
+}
+
+#settingsBtn {
+  order: 0;
+  height: 8vw;
+  margin-top: 1vw;
+}
+
+#cogImg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 6vw;
+  height: 6vw;
+  background-image: url(./img/cog.png);
+  background-size: 6vw;
+  transition: transform 0.75s ease-in-out;
+}
+
+#cogImg.rotated {
+  transform: rotate(360deg);
+}
+
+#stepBtn {
+  margin-top: 2vw;
+  order: 2;
+}
+
+#autoStepBtn {
+  margin-top: 0.5vw;
+  order: 3;
+}
+
+#autoStepBtn.on {
+  width: 8.1vw;
+  border-width: 0.3vw;
+}
+
+#clearBtn {
+  margin-top: 0.5vw;
+  order: 4;
+}
+
+/* START Settings div styling */
+
+#settingsContainer {
+  padding-top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  transition: height 1s ease-in-out, padding-top 1s ease-in-out,
+    opacity 0.5s linear;
+}
+
+#settingsContainer.open {
+  padding-top: 2vw;
+  width: 10vw;
+  height: 80vh;
+  opacity: 1;
+  background-color: blue;
+}
+
+.textIO {
+  box-sizing: border-box;
+  width: 8vw;
+  height: 4vw;
+  padding: 0.25vw;
+  border: 0.2vw solid var(--button-border);
+  border-radius: 0.5vw;
+  background-color: var(--green);
+  color: black;
+  font-family: "Courier Prime", monospace;
+  font-size: 0.6vw;
+  text-align: justify;
+  transition: background-color 0.15s ease-in, border-color 0.15s ease-in,
+    border-width, 0.05s linear;
+}
+
+#seedIO {
+  order: 0;
+}
+
+#getSeedBtn {
+  margin-top: 0.5vw;
+  order: 1;
+}
+
+#loadSeedBtn {
+  margin-top: 0.5vw;
+  order: 2;
+}
+
+/* START Game table styling */
 
 #table {
   order: 0;
@@ -56,6 +206,8 @@ body {
   height: 95vh;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  /* border: 5px dashed red; */
 }
 
 .row {
@@ -63,30 +215,58 @@ body {
   width: min-content;
   background-color: white;
   box-sizing: border-box;
-  border-bottom: 2px solid gray;
   display: flex;
   flex-direction: row;
+}
+
+.row:first-of-type {
+  border-top: 0.15vw solid var(--alt-grid-color);
+}
+
+.row:nth-of-type(8n) {
+  border-bottom: 0.15vw solid var(--alt-grid-color);
 }
 
 .cell {
   box-sizing: border-box;
   width: var(--cell-size);
-  background-color: magenta;
-  border-right: 2px solid gray;
+  border: 0.1vw solid var(--grid-color);
+  transition-property: background-color;
+  transition-timing-function: ease-out;
 }
 
-.cell:hover {
-  background-color: wheat;
+.cell:first-of-type {
+  border-left: 0.15vw solid var(--alt-grid-color);
 }
 
-.selected {
-  background-color: wheat;
+.cell:nth-of-type(8n) {
+  border-right: 0.15vw solid var(--alt-grid-color);
 }
 
 .alive {
-  background-color: lime;
+  background-color: var(--green);
+  transition-duration: 0.1s;
+}
+
+.alive:hover {
+  background-color: var(--alt-green);
+}
+
+.selectedAlive {
+  background-color: var(--alt-green);
+  transition-duration: 0.15s;
 }
 
 .dead {
-  /* background-color: black; */
+  background-color: var(--cell-dead);
+  transition-duration: 0.1s;
+}
+
+.dead:hover {
+  background-color: var(--cell-dead-hover);
+}
+
+.selectedDead {
+  background-color: var(--cell-dead-hover);
+  transition-duration: 0.2s;
 }

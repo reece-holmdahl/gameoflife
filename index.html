@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Conway's Game of Life</title>
   </head>
 
@@ -14,13 +14,17 @@
         <div id="footer"></div>
       </div>
       <div id="buttons">
-        <button id="settingsBtn">Settings</button>
-        <button id="stepBtn">Step</button>
-        <button id="autoStepBtn">Auto Step</button>
-        <button id="clearBtn">Clear</button>
-        <input id="seedIO" type="text" />
-        <button id="getSeedBtn">Get Seed</button>
-        <button id="loadSeedBtn">Load Seed</button>
+        <button id="settingsBtn" class="button">
+          <div id="cogImg"></div>
+        </button>
+        <div id="settingsContainer">
+          <textarea id="seedIO" class="textIO" rows="5"></textarea>
+          <button id="getSeedBtn" class="button">SAVE SEED</button>
+          <button id="loadSeedBtn" class="button">LOAD SEED</button>
+        </div>
+        <button id="stepBtn" class="button">STEP</button>
+        <button id="autoStepBtn" class="button">AUTO STEP</button>
+        <button id="clearBtn" class="button">CLRSCRN</button>
       </div>
     </div>
   </body>

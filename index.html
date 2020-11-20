@@ -1,65 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" type="text/css" href="style.css" />
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="UTF-8" />
+    <title>Conway's Game of Life</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Conway's Game of Life</title>
-</head>
-
-<body>
-  <div id="pageWrapper">
-    <div id="gameOfLife">
-      <div id="gameName">
-        <span>Game</span>
-        <span>of</span>
-        <span>Life</span>
+  <body>
+    <div id="container">
+      <div id="title"></div>
+      <div id="game">
+        <div id="table"></div>
+        <div id="footer"></div>
       </div>
-      <table id="gameTable"></table>
+      <div id="buttons">
+        <button id="settingsBtn">Settings</button>
+        <button id="stepBtn">Step</button>
+        <button id="autoStepBtn">Auto Step</button>
+        <button id="clearBtn">Clear</button>
+        <input id="seedIO" type="text" />
+        <button id="getSeedBtn">Get Seed</button>
+        <button id="loadSeedBtn">Load Seed</button>
+      </div>
     </div>
-
-    <div id="buttonWrapper">
-      <input id="stepButton" class="button" type="button" value="STEP" />
-      <input id="clearButton" class="button" type="button" value="CLR" onclick="clearScreen()" />
-    </div>
-
-    <div id="personalCredits">
-      <p>my name is</p>
-      <span class="left">reece</span>
-      <span>holmdahl</span>
-      <a href="https://github.com/reeceholmdahl/gameoflife">github here</a>
-    </div>
-  </div>
-
-  <button id="settingsButton" class="button">
-    <img id="cogImg" src="img/cog.png" />
-  </button>
-
-  <div id="settingsWrapper" class="closed">
-    <div id="optionsContainer">
-      <form id="sizeAdjust" class="hide">
-        <h1>grid size adjustment</h1>
-        <label for="horizontalSize">horizontal grid size</label>
-        <input id="horizontalSize" type="text" />
-        <label for="verticalSize">vertical grid size</label>
-        <input id="verticalSize" type="text" />
-        <input id="rebuildTable" class="button" type="button" value="rebuild table" />
-        <input id="resetButton" class="button" type="button" onclick="resetGame()" value="reset" />
-      </form>
-      <form id="autoStep" class="hide">
-        <h1>auto step settings</h1>
-        <label for="msPerAutoStep">milliseconds per auto step</label>
-        <input id="msPerAutoStep" type="text" />
-        <label for="delayBeforeAutoStep">delay (in ms) before auto stepping begins</label>
-        <input id="delayBeforeAutoStep" type="text" />
-      </form>
-      <form id="seedOptions" class="hide">
-        <h1>seed save & load</h1>
-        <p>Nothing here yet, more to come soon!</p>
-      </form>
-    </div>
-  </div>
-</body>
-<script src="new_script.js"></script>
-
+  </body>
+  <script src="script.test.js"></script>
 </html>

@@ -6,8 +6,8 @@ const TABLE_HEIGHT = 95;
 const TABLE = document.getElementById('table');
 
 const TABLE_SIZE = {
-    r: 48,
-    c: 80,
+    r: 25,
+    c: 25,
 };
 
 let lifeMap = [];
@@ -17,12 +17,12 @@ let autoStepInterval;
 
 /* UTILITY FUNCTIONS */
 
-// Converts from row, column coords to id string; (r, c) -> "r.c"
+// Converts from row, column coords to id string; (r, c) -> 'r.c'
 function toId(r, c) {
     return r + '.' + c;
 }
 
-// Converts from id string to row, column coords; "r.c" -> (r, c)
+// Converts from id string to row, column coords; 'r.c' -> (r, c)
 function fromId(id) {
     const split = id.split('.');
     const coords = {
@@ -36,6 +36,9 @@ function fromId(id) {
 function toggleCell(id) {
     document.getElementById(id).classList.toggle('dead');
     document.getElementById(id).classList.toggle('alive');
+
+    const coords = fromId(id);
+    // lifeMap[coords.r][coords.c] = !lifeMap[coords.r][coords.c]
 }
 
 /* GAME TABLE FUNCTIONALITY */
@@ -62,6 +65,8 @@ function buildTable() {
         row.id = r;
         row.classList.add('row');
         TABLE.appendChild(row);
+
+        lifeMap[r] = [];
     };
 
     const eachCell = (r, c) => {
@@ -72,8 +77,11 @@ function buildTable() {
         cell.id = id;
         cell.onclick = () => {
             toggleCell(id);
+            lifeMap[r][c] = !lifeMap[r][c]
         }
         document.getElementById(r).appendChild(cell);
+
+        lifeMap[r][c] = false;
     };
 
     iterateThroughTable(eachCell, eachRow);
@@ -193,7 +201,7 @@ function autoStepHandler() {
     }
 }
 
-// TODO Document
+// Clears the game table, resets the life map, and force stops the auto stepper
 function clearTable() {
 
     // Kill each cell
@@ -201,6 +209,9 @@ function clearTable() {
 
         // Convert from (r, c) to id
         const id = toId(r, c);
+
+        // Clear life map
+        lifeMap[r][c] = false;
 
         // Kill cell
         document.getElementById(id).classList.add('dead');
@@ -215,6 +226,111 @@ function clearTable() {
     iterateThroughTable(killCell);
 }
 
+/* SEED FUNCTIONALITY */
+
+// Generates the seed of the current life map. Seed generation formula as of right now: base64(#rowsx#cols&(if starting with alive A.)#alive.#dead.#alive.#dead...)
+function getCurrentSeed() {
+
+    // Stringy size of seed
+    const sizeString = TABLE_SIZE.r + 'x' + TABLE_SIZE.c;
+
+    let lastCellAlive = lifeMap[0][0];
+
+    // Distance between each cell alternating life state
+    const cellLocations = lastCellAlive ? ['A'] : [];
+
+    // Number of cells with same life status in a row
+    let sameCount = 0;
+
+    const eachCell = (r, c) => {
+        // Life state of this cell
+        const alive = lifeMap[r][c];
+
+        // If the life state of this cell doesn't equal that of the last, push the count to the cell locations array and reset the count
+        if (alive != lastCellAlive) {
+            cellLocations.push(sameCount);
+            sameCount = 0;
+        }
+
+        // Set the last cell life status to this cell's
+        lastCellAlive = alive;
+
+        // Increment count
+        sameCount++;
+
+        // If this is the last cell in the seed, and it is alive, push its count to the cell locations array
+        if (r === TABLE_SIZE.r - 1 && c === TABLE_SIZE.c - 1 && alive) {
+            cellLocations.push(sameCount);
+        }
+    }
+
+    // Iterate through table
+    iterateThroughTable(eachCell);
+
+    // Compile raw seed string and return base64 encoded
+    const rawSeedString = sizeString + '&' + cellLocations.join('.');
+    // console.log(rawSeedString);
+    return btoa(rawSeedString);
+}
+
+// Loads a seed as per the generation formula
+function loadSeed(seed) {
+
+    // Decode raw seed string from base64
+    const rawSeedString = atob(seed);
+
+    // Split raw seed string to size and location pieces
+    const split = rawSeedString.split('&');
+
+    // Split size strong and assign rows and columns constant
+    const sizeString = split[0].split('x');
+
+    const rows = sizeString[0];
+    const cols = sizeString[1];
+
+    // Disable loading of seed if it's grid size is larger than the current one
+    if (rows > TABLE_SIZE.r || cols > TABLE_SIZE.c) {
+        console.log("The seed that you're attempting to load is bigger than your grid size");
+        return;
+    }
+
+    const cellLocations = split[1].split('.');
+
+    // If first cell is alive, shift array so the alive indicator isn't included in positions
+    let firstCellAlive = cellLocations[0] == 'A';
+    if (firstCellAlive) {
+        cellLocations.shift();
+    }
+
+    // Clear table to prepare for loading sead
+    clearTable();
+
+    // Number of cells with the same life status in a row
+    let sameCount = 0;
+
+    // Set alive section according to alive indicator
+    let aliveSection = firstCellAlive;
+
+    // Loop until iterated through whole table or exit early
+    for (let r = 0; r < rows && cellLocations.length > 0; r++) {
+        for (let c = 0; c < cols; c++) {
+            // If this section of cells is alive, toggle them on (all cells are dead after clear)
+            if (aliveSection) {
+                toggleCell(toId(r, c));
+                lifeMap[r][c] = !lifeMap[r][c]
+            }
+            // Increment count
+            sameCount += 1;
+
+            // If the count reaches the end of the section, shift that distance out of the array, reset the count, and flip the section
+            if (sameCount == cellLocations[0]) {
+                cellLocations.shift();
+                sameCount = 0;
+                aliveSection = !aliveSection;
+            }
+        }
+    }
+}
 
 /* GRID DRAG SELECTION FUNCTIONALITY  */
 
@@ -273,6 +389,7 @@ window.addEventListener('mouseup', e => {
             if (r >= startRow && r <= endRow && c >= startCol && c <= endCol) {
                 cell.classList.add('alive');
                 cell.classList.remove('dead');
+                lifeMap[r][c] = true;
             }
         })
     }
@@ -293,4 +410,10 @@ window.addEventListener('mouseup', e => {
 document.getElementById('stepBtn').onclick = stepGame;
 document.getElementById('autoStepBtn').onclick = autoStepHandler;
 document.getElementById('clearBtn').onclick = clearTable;
+document.getElementById('getSeedBtn').onclick = () => {
+    document.getElementById("seedIO").value = getCurrentSeed();
+};
+document.getElementById('loadSeedBtn').onclick = () => {
+    loadSeed(document.getElementById("seedIO").value);
+};
 buildTable();
